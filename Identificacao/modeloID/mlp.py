@@ -6,6 +6,12 @@ from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error, r2_score
 
+def save_matrix(filename, M):
+    np.savetxt(filename, M, delimiter=",", fmt="%.12f")
+
+def save_vector(filename, v):
+    np.savetxt(filename, v, delimiter=",", fmt="%.12f")
+
 try:
     df = pd.read_csv('dados_pwm.csv')
     print("Dados carregados com sucesso!")
@@ -75,3 +81,24 @@ plt.grid(True, linestyle='--', alpha=0.7)
 nome_arquivo = 'grafico_identificacao.png'
 plt.savefig(nome_arquivo)
 print(f"\nGráfico salvo com sucesso como '{nome_arquivo}'")
+
+# Pesos e biases da MLP
+weights = mlp.coefs_
+biases  = mlp.intercepts_
+
+save_matrix("W1.csv", weights[0])
+save_vector("b1.csv", biases[0])
+
+save_matrix("W2.csv", weights[1])
+save_vector("b2.csv", biases[1])
+
+save_matrix("W3.csv", weights[2])
+save_vector("b3.csv", biases[2])
+
+# Escaladores
+save_vector("scaler_X_mean.csv", scaler_X.mean_)
+save_vector("scaler_X_scale.csv", scaler_X.scale_)
+save_vector("scaler_y_mean.csv", scaler_y.mean_)
+save_vector("scaler_y_scale.csv", scaler_y.scale_)
+
+print("Arquivos CSV gerados com sucesso!")
