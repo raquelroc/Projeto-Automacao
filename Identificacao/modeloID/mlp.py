@@ -13,7 +13,7 @@ def save_vector(filename, v):
     np.savetxt(filename, v, delimiter=",", fmt="%.12f")
 
 try:
-    df = pd.read_csv('dados_pwm.csv')
+    df = pd.read_csv('Identificacao/modeloID/dados_pwm.csv')
     print("Dados carregados com sucesso!")
 except FileNotFoundError:
     print("Erro: Arquivo 'dados_pwm.csv' não encontrado.")
@@ -102,3 +102,8 @@ save_vector("scaler_y_mean.csv", scaler_y.mean_)
 save_vector("scaler_y_scale.csv", scaler_y.scale_)
 
 print("Arquivos CSV gerados com sucesso!")
+
+# deixar estas variáveis disponíveis
+# Exporta as variáveis importantes para outros módulos
+__all__ = ["mlp", "scaler_X", "scaler_y"]
+
