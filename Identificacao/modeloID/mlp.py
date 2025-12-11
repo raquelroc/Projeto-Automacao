@@ -7,7 +7,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error, r2_score
 
 try:
-    df = pd.read_csv('dados_pwm.csv')
+    df = pd.read_csv('Identificacao/modeloID/dados_pwm.csv')
     print("Dados carregados com sucesso!")
 except FileNotFoundError:
     print("Erro: Arquivo 'dados_pwm.csv' não encontrado.")
@@ -72,8 +72,6 @@ plt.ylabel('Distância (cm)')
 plt.legend()
 plt.grid(True, linestyle='--', alpha=0.7)
 
-nome_arquivo = 'grafico_identificacao.png'
+nome_arquivo = 'Identificacao/modeloID/grafico_identificacao.png'
 plt.savefig(nome_arquivo)
 print(f"\nGráfico salvo com sucesso como '{nome_arquivo}'")
-
-print("Arquivos CSV gerados com sucesso!")
