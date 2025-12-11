@@ -1,9 +1,9 @@
 #include <Arduino.h>
-#define KP_50_40 2.1751
-#define KP_40_30 2.6028
-#define KP_30_20 2.2017
-#define KP_20_10 1.6938
-#define KP_10_0  3.5341
+#define KP_50_40 3.2419
+#define KP_40_30 2.6609
+#define KP_30_20 2.4079
+#define KP_20_10 3.7133
+#define KP_10_0  2.6157
 
 // ---------------- Ventoinha -----------------
 const int pwmPin = 9;
@@ -102,9 +102,9 @@ void loop() {
         if (input.length() > 0) {
             float val = input.toFloat();
             if (val > 3 && val < 300) {
-                setpoint = val;
+                setpoint = 50 - val;
                 Serial.print("Novo setpoint definido: ");
-                Serial.print(setpoint);
+                Serial.print(val);
                 Serial.println(" cm");
             } else {
                 Serial.println("Digite um valor entre 3 e 300 cm.");
