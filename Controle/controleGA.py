@@ -40,7 +40,7 @@ def fitness_P_unico(Kp, referencia, mlp, scaler_X, scaler_y):
 # 4) ALGORITMO GENÉTICO PARA UM ÚNICO KP
 # ======================================================
 def GA_encontrar_Kp(mlp, scaler_X, scaler_y, referencia,
-                    pop_size=10, geracoes=30,
+                    pop_size=30, geracoes=30,
                     prob_reproducao=0.8, taxa_mutacao=0.2):
 
     pop = np.random.uniform(0, 5, size=(pop_size,))
@@ -104,7 +104,7 @@ if __name__ == "__main__":
 
     print("\nIniciando busca de Kp por intervalo...\n")
 
-    referencias = [45, 35, 25, 15, 5]  # centro dos intervalos
+    referencias = [45, 40, 35, 30, 25, 20, 15, 10, 5, 0]  # centro dos intervalos
 
     Kp_otimizados = []
 
@@ -114,17 +114,22 @@ if __name__ == "__main__":
         Kp_otimizados.append(Kp_best)
 
     print("\n===== RESULTADOS FINAIS =====")
-    print(f"Kp (50→40): {Kp_otimizados[0]:.4f}")
-    print(f"Kp (40→30): {Kp_otimizados[1]:.4f}")
-    print(f"Kp (30→20): {Kp_otimizados[2]:.4f}")
-    print(f"Kp (20→10): {Kp_otimizados[3]:.4f}")
-    print(f"Kp (10→0):  {Kp_otimizados[4]:.4f}")
+    print(f"Kp (50→45): {Kp_otimizados[0]:.4f}")
+    print(f"Kp (45→40): {Kp_otimizados[1]:.4f}")
+    print(f"Kp (40→35): {Kp_otimizados[2]:.4f}")
+    print(f"Kp (35→30): {Kp_otimizados[3]:.4f}")
+    print(f"Kp (30→25): {Kp_otimizados[4]:.4f}")
+    print(f"Kp (25→20): {Kp_otimizados[5]:.4f}")
+    print(f"Kp (20→15): {Kp_otimizados[6]:.4f}")
+    print(f"Kp (15→10): {Kp_otimizados[7]:.4f}")
+    print(f"Kp (10→5):  {Kp_otimizados[8]:.4f}")
+    print(f"Kp (5→0):  {Kp_otimizados[9]:.4f}")
 
     resultado = f"""#define KP_50_40 {Kp_otimizados[0]:.4f}
-#define KP_40_30 {Kp_otimizados[1]:.4f}
-#define KP_30_20 {Kp_otimizados[2]:.4f}
-#define KP_20_10 {Kp_otimizados[3]:.4f}
-#define KP_10_0  {Kp_otimizados[4]:.4f}"""
+#define Kp_40_30 {Kp_otimizados[1]:.4f}
+#define Kp_30_20 {Kp_otimizados[2]:.4f}
+#define Kp_20_10 {Kp_otimizados[3]:.4f}
+#define Kp_10_0  {Kp_otimizados[4]:.4f}"""
 
     with open("Controle/kp_resultados.h", "w") as f:
         f.write(resultado)

@@ -30,7 +30,7 @@ float readDistance() {
 
 void setup() {
   Serial.begin(115200);
-  analogWrite(pwmPin, 0);
+  analogWrite(pwmPin, 175);
   delay(10000);
   pinMode(pwmPin, OUTPUT);
   pinMode(trigPin, OUTPUT);
@@ -43,7 +43,20 @@ void setup() {
 void loop() {
 
   // Varredura completa de PWM
-  for (int pwm = 140; pwm <= 180; pwm++) {
+  for (int pwm = 140; pwm <= 175; pwm++) {
+
+    analogWrite(pwmPin, pwm);
+    delay(5000);  // tempo para estabilizar o sistema
+    for (int i = 0; i < 10; i++){
+      delay(100);
+      float dist = readDistance();
+      // Enviar dados para o PC em formato CSV
+      Serial.print(pwm);
+      Serial.print(",");
+      Serial.println(dist);
+    }
+  }
+  for (int pwm = 175; pwm >= 120; pwm--) {
 
     analogWrite(pwmPin, pwm);
     delay(5000);  // tempo para estabilizar o sistema

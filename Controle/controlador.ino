@@ -1,9 +1,9 @@
 #include <Arduino.h>
-#define KP_50_40 3.2419
-#define KP_40_30 2.6609
-#define KP_30_20 2.4079
-#define KP_20_10 3.7133
-#define KP_10_0  2.6157
+#define Kp_50_40 0.1
+#define Kp_40_30 0.1
+#define Kp_30_20 0.1
+#define Kp_20_10 0.1
+#define Kp_10_0  0.1
 
 // ---------------- Ventoinha -----------------
 const int pwmPin = 9;
@@ -24,7 +24,7 @@ const int echoPin = 13;
 float setpoint = 20.0; // altura desejada (cm)
 float Kp = 0;
 
-const float dt = 1;  // tempo fixo do PID em segundos
+const float dt = 3;  // tempo fixo do PID em segundos
 unsigned long lastControl = 0;
 
 // -----------------------------------------------------
@@ -134,11 +134,11 @@ void loop() {
         lastControl = now;
 
         // ---------- Dados relevantes ----------
-        Serial.print("ERROR=");
+        Serial.print("\n ERROR=");
         Serial.print(error);
         Serial.print(" | SP=");
         Serial.print(setpoint);
-        Serial.print("\n cm | Dist=");
+        Serial.print("cm | \n Dist=");
         Serial.print(rawDist);
         Serial.print(" cm | PWM=");
         Serial.print(pwmValueFloat);

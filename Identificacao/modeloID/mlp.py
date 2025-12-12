@@ -7,7 +7,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error, r2_score
 
 try:
-    df = pd.read_csv('Identificacao/modeloID/dados_pwm.csv')
+    df = pd.read_csv('Identificacao/dados_pwm.csv')
     print("Dados carregados com sucesso!")
 except FileNotFoundError:
     print("Erro: Arquivo 'dados_pwm.csv' não encontrado.")
