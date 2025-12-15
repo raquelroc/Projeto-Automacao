@@ -1,5 +1,19 @@
 import numpy as np
 
+"""
+teste antes das mudanças
+===== RESULTADOS FINAIS =====
+Kp (50→45): 2.7643
+Kp (45→40): 1.7239
+Kp (40→35): 2.4232
+Kp (35→30): 1.6655
+Kp (30→25): 2.8445
+Kp (25→20): 1.7355
+Kp (20→15): 1.9110
+Kp (15→10): 2.4834
+Kp (10→5):  3.3970
+Kp (5→0):  1.6049
+"""
 
 # ======================================================
 # 1) Modelo da planta (MLP)
@@ -17,22 +31,24 @@ def modelo_mlp(pwm, mlp, scaler_X, scaler_y):
 def simular_P_unico(Kp, referencia, mlp, scaler_X, scaler_y):
     dist = 0
     erros = []
+    pwms = []
 
     for _ in range(150):  # passos da simulação
         erro = referencia - dist
         pwm = np.clip(Kp * erro, 140, 180)
         dist = modelo_mlp(pwm, mlp, scaler_X, scaler_y)
         erros.append(erro)
+        pwms.append(pwm)
 
-    return np.array(erros)
+    return np.array(erros), np.array(pwms)
 
 
 # ======================================================
 # 3) FITNESS — quanto menor melhor
 # ======================================================
-def fitness_P_unico(Kp, referencia, mlp, scaler_X, scaler_y):
-    erros = simular_P_unico(Kp, referencia, mlp, scaler_X, scaler_y)
-    mse = np.mean(erros**2)
+def fitness_P_unico(Kp, referencia, mlp, scaler_X, scaler_y, lambda_u=0.01):
+    erros, pwms = simular_P_unico(Kp, referencia, mlp, scaler_X, scaler_y)
+    mse = np.mean(erros**2) + lambda_u * np.mean(pwms**2) # Mudança: adicionando pwm no custo, simulando o esforço do controlador
     return mse
 
 
@@ -43,7 +59,7 @@ def GA_encontrar_Kp(mlp, scaler_X, scaler_y, referencia,
                     pop_size=30, geracoes=30,
                     prob_reproducao=0.8, taxa_mutacao=0.2):
 
-    pop = np.random.uniform(0, 5, size=(pop_size,))
+    pop = np.random.uniform(0, 5, size=(pop_size,)) ## possivel mudança: pop = np.random.uniform(0, 1.5), diminuindo o intervalo do Kp
 
     for g in range(geracoes):
 
@@ -104,7 +120,7 @@ if __name__ == "__main__":
 
     print("\nIniciando busca de Kp por intervalo...\n")
 
-    referencias = [45, 40, 35, 30, 25, 20, 15, 10, 5, 0]  # centro dos intervalos
+    referencias = [45] # [45, 40, 35, 30, 25, 20, 15, 10, 5, 0]  # centro dos intervalos
 
     Kp_otimizados = []
 
