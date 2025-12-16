@@ -56,7 +56,7 @@ def fitness_P_unico(Kp, referencia, mlp, scaler_X, scaler_y, lambda_u=0.1):
 # 4) ALGORITMO GENÉTICO PARA UM ÚNICO KP
 # ======================================================
 def GA_encontrar_Kp(mlp, scaler_X, scaler_y, referencia,
-                    pop_size=30, geracoes=30,
+                    pop_size=30, geracoes=100,
                     prob_reproducao=0.8, taxa_mutacao=0.2):
 
     pop = np.random.uniform(0, 1.5, size= (pop_size,))
