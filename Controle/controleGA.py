@@ -29,14 +29,14 @@ def modelo_mlp(pwm, mlp, scaler_X, scaler_y):
 # 2) SIMULADOR DO CONTROLADOR P COM UM ÚNICO KP
 # ======================================================
 def simular_P_unico(Kp, referencia, mlp, scaler_X, scaler_y):
-    dist = 0
+    dist = 50
     erros = []
     pwms = []
 
     for _ in range(150):  # passos da simulação
         erro = referencia - dist
-        pwm = np.clip(Kp * erro, 140, 180)
-        dist = modelo_mlp(pwm, mlp, scaler_X, scaler_y)
+        pwm = 150 + Kp * (erro / 50) * 25
+        dist = np.clip(modelo_mlp(pwm, mlp, scaler_X, scaler_y), 0, 50)
         erros.append(erro)
         pwms.append(pwm)
 
@@ -46,7 +46,7 @@ def simular_P_unico(Kp, referencia, mlp, scaler_X, scaler_y):
 # ======================================================
 # 3) FITNESS — quanto menor melhor
 # ======================================================
-def fitness_P_unico(Kp, referencia, mlp, scaler_X, scaler_y, lambda_u=0.01):
+def fitness_P_unico(Kp, referencia, mlp, scaler_X, scaler_y, lambda_u=0.1):
     erros, pwms = simular_P_unico(Kp, referencia, mlp, scaler_X, scaler_y)
     mse = np.mean(erros**2) + lambda_u * np.mean(pwms**2) # Mudança: adicionando pwm no custo, simulando o esforço do controlador
     return mse
@@ -59,7 +59,7 @@ def GA_encontrar_Kp(mlp, scaler_X, scaler_y, referencia,
                     pop_size=30, geracoes=30,
                     prob_reproducao=0.8, taxa_mutacao=0.2):
 
-    pop = np.random.uniform(0, 5, size=(pop_size,)) ## possivel mudança: pop = np.random.uniform(0, 1.5), diminuindo o intervalo do Kp
+    pop = np.random.uniform(0, 1.5, size= (pop_size,))
 
     for g in range(geracoes):
 
@@ -96,8 +96,8 @@ def GA_encontrar_Kp(mlp, scaler_X, scaler_y, referencia,
             filho1 += np.random.normal(0, taxa_mutacao)
             filho2 += np.random.normal(0, taxa_mutacao)
 
-            filho1 = np.clip(filho1, 0, 5)
-            filho2 = np.clip(filho2, 0, 5)
+            filho1 = np.clip(filho1, 0.01, 1.5)
+            filho2 = np.clip(filho2, 0.01, 1.5)
 
             # substitui os pais
             nova_pop[idx1] = filho1
@@ -120,7 +120,7 @@ if __name__ == "__main__":
 
     print("\nIniciando busca de Kp por intervalo...\n")
 
-    referencias = [45] # [45, 40, 35, 30, 25, 20, 15, 10, 5, 0]  # centro dos intervalos
+    referencias = [45, 40, 35, 30, 25, 20, 15, 10, 5, 0]  # centro dos intervalos
 
     Kp_otimizados = []
 
@@ -141,11 +141,16 @@ if __name__ == "__main__":
     print(f"Kp (10→5):  {Kp_otimizados[8]:.4f}")
     print(f"Kp (5→0):  {Kp_otimizados[9]:.4f}")
 
-    resultado = f"""#define KP_50_40 {Kp_otimizados[0]:.4f}
-#define Kp_40_30 {Kp_otimizados[1]:.4f}
-#define Kp_30_20 {Kp_otimizados[2]:.4f}
-#define Kp_20_10 {Kp_otimizados[3]:.4f}
-#define Kp_10_0  {Kp_otimizados[4]:.4f}"""
+    resultado = f"""#define Kp_50_45 {Kp_otimizados[0]:.4f}
+#define Kp_45_40 {Kp_otimizados[1]:.4f}
+#define Kp_40_35 {Kp_otimizados[2]:.4f}
+#define Kp_35_30 {Kp_otimizados[3]:.4f}
+#define Kp_30_25 {Kp_otimizados[4]:.4f}
+#define Kp_25_20 {Kp_otimizados[5]:.4f}
+#define Kp_20_15 {Kp_otimizados[6]:.4f}
+#define Kp_15_10 {Kp_otimizados[7]:.4f}
+#define Kp_10_5 {Kp_otimizados[8]:.4f}
+#define Kp_5_0  {Kp_otimizados[9]:.4f}"""
 
     with open("Controle/kp_resultados.h", "w") as f:
         f.write(resultado)

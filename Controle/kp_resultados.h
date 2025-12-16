@@ -1,5 +1,10 @@
-#define KP_50_40 2.7643
-#define Kp_40_30 1.7239
-#define Kp_30_20 2.4232
-#define Kp_20_10 1.6655
-#define Kp_10_0  2.8445
+#define Kp_50_45 0.3970
+#define Kp_45_40 0.2727
+#define Kp_40_35 0.2778
+#define Kp_35_30 0.3525
+#define Kp_30_25 1.1930
+#define Kp_25_20 1.3819
+#define Kp_20_15 1.3523
+#define Kp_15_10 1.2225
+#define Kp_10_5 1.0112
+#define Kp_5_0  1.0007

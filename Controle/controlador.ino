@@ -1,9 +1,14 @@
 #include <Arduino.h>
-#define Kp_50_40 0.1
-#define Kp_40_30 0.1
-#define Kp_30_20 0.1
-#define Kp_20_10 0.1
-#define Kp_10_0  0.1
+#define Kp_50_45 0.3970
+#define Kp_45_40 0.2727
+#define Kp_40_35 0.2778
+#define Kp_35_30 0.3525
+#define Kp_30_25 1.1930
+#define Kp_25_20 1.3819
+#define Kp_20_15 1.3523
+#define Kp_15_10 1.2225
+#define Kp_10_5 1.0112
+#define Kp_5_0  1.0007
 
 // ---------------- Ventoinha -----------------
 const int pwmPin = 9;
@@ -83,11 +88,16 @@ float readDistance() {
 // ---------- Seleção Condicional do Kp ----------
 float getKp(float setpoint) {
 
-    if (setpoint > 40 && setpoint <= 50) return Kp_50_40;
-    if (setpoint > 30 && setpoint <= 40) return Kp_40_30;
-    if (setpoint > 20 && setpoint <= 30) return Kp_30_20;
-    if (setpoint > 10 && setpoint <= 20) return Kp_20_10;
-    if (setpoint >= 0 && setpoint <= 10) return Kp_10_0;
+    if (setpoint > 45 && setpoint <= 50) return Kp_50_45;
+    if (setpoint > 40 && setpoint <= 45) return Kp_45_40;
+    if (setpoint > 35 && setpoint <= 40) return Kp_40_35;
+    if (setpoint > 30 && setpoint <= 35) return Kp_35_30;
+    if (setpoint > 25 && setpoint <= 30) return Kp_30_25;
+    if (setpoint > 20 && setpoint <= 25) return Kp_25_20;
+    if (setpoint > 15 && setpoint <= 20) return Kp_20_15;
+    if (setpoint > 10 && setpoint <= 15) return Kp_15_10;
+    if (setpoint > 5 && setpoint <= 10) return Kp_10_5;
+    if (setpoint >= 0 && setpoint <= 5) return Kp_5_0;
 
 }
 
