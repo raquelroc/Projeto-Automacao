@@ -31,24 +31,24 @@ def modelo_mlp(pwm, mlp, scaler_X, scaler_y):
 def simular_P_unico(Kp, referencia, mlp, scaler_X, scaler_y):
     dist = 50
     erros = []
-    pwms = []
+    pwm = 0
 
-    for _ in range(150):  # passos da simulação
-        erro = referencia - dist
-        pwm = 150 + Kp * (erro / 50) * 25
+    for _ in range(60):  # passos da simulação
+        erro = -(referencia - dist)
+        pwm += Kp * erro
+        pwm = np.clip(pwm, 125, 175)
         dist = np.clip(modelo_mlp(pwm, mlp, scaler_X, scaler_y), 0, 50)
         erros.append(erro)
-        pwms.append(pwm)
 
-    return np.array(erros), np.array(pwms)
+    return np.array(erros)
 
 
 # ======================================================
 # 3) FITNESS — quanto menor melhor
 # ======================================================
 def fitness_P_unico(Kp, referencia, mlp, scaler_X, scaler_y, lambda_u=0.1):
-    erros, pwms = simular_P_unico(Kp, referencia, mlp, scaler_X, scaler_y)
-    mse = np.mean(erros**2) + lambda_u * np.mean(pwms**2) # Mudança: adicionando pwm no custo, simulando o esforço do controlador
+    erros = simular_P_unico(Kp, referencia, mlp, scaler_X, scaler_y)
+    mse = np.mean(erros**2)
     return mse
 
 
@@ -57,9 +57,9 @@ def fitness_P_unico(Kp, referencia, mlp, scaler_X, scaler_y, lambda_u=0.1):
 # ======================================================
 def GA_encontrar_Kp(mlp, scaler_X, scaler_y, referencia,
                     pop_size=30, geracoes=100,
-                    prob_reproducao=0.8, taxa_mutacao=0.2):
+                    prob_reproducao=0.8, taxa_mutacao=0.1):
 
-    pop = np.random.uniform(0, 1.5, size= (pop_size,))
+    pop = np.random.uniform(0.01, 1.5, size= (pop_size,))
 
     for g in range(geracoes):
 
@@ -96,8 +96,8 @@ def GA_encontrar_Kp(mlp, scaler_X, scaler_y, referencia,
             filho1 += np.random.normal(0, taxa_mutacao)
             filho2 += np.random.normal(0, taxa_mutacao)
 
-            filho1 = np.clip(filho1, 0.01, 1.5)
-            filho2 = np.clip(filho2, 0.01, 1.5)
+            filho1 = np.clip(filho1, 0.01, 5)
+            filho2 = np.clip(filho2, 0.01, 5)
 
             # substitui os pais
             nova_pop[idx1] = filho1
