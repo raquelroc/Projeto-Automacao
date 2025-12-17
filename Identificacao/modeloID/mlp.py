@@ -13,8 +13,9 @@ except FileNotFoundError:
     print("Erro: Arquivo 'dados_pwm.csv' não encontrado.")
     exit()
 
-X = df[['PWM']].values
-y = df['Distancia_cm'].values
+df_subida = df[df['Distancia_cm'].diff() > 0]  # mantém as linhas onde a diferença da distância é positiva
+X = df_subida[['PWM']].values
+y = df_subida['Distancia_cm'].values
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
