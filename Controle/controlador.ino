@@ -1,14 +1,14 @@
 #include <Arduino.h>
-#define Kp_50_45 0.2069
-#define Kp_45_40 0.2332
-#define Kp_40_35 0.2022
-#define Kp_35_30 0.2508
-#define Kp_30_25 1.1796
-#define Kp_25_20 1.5670
-#define Kp_20_15 1.1961
-#define Kp_15_10 1.4543
-#define Kp_10_5 1.5660
-#define Kp_5_0  1.4188
+#define Kp_50_45 0.2166
+#define Kp_45_40 0.2158
+#define Kp_40_35 0.1938
+#define Kp_35_30 0.6444
+#define Kp_30_25 1.1372
+#define Kp_25_20 1.4089
+#define Kp_20_15 1.4278
+#define Kp_15_10 1.4183
+#define Kp_10_5 1.1659
+#define Kp_5_0  0.9099
 
 // ---------------- Ventoinha -----------------
 const int pwmPin = 9;
@@ -155,3 +155,4 @@ void loop() {
     Serial.print(Kp);
   }
 }
+
